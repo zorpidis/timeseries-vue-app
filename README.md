@@ -1,4 +1,4 @@
-# interview-project-stellar-blue
+# timeseries-vue-app
 
 ## Project setup
 ```
