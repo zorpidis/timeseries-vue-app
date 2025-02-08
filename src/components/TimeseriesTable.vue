@@ -15,11 +15,11 @@
       <tbody>
         <tr v-for="row in timeseries" :key="row.DateTime">
           <td>{{ formatDateTime(row.DateTime) }}</td>
-          <td @click="toggleEditMode(row,$event,row.ENTSOE_GR_DAM_Price,row.ENTSOE_DE_DAM_Price,row.ENTSOE_FR_DAM_Price)" v-if="!editModes[row.id]" >{{ row.ENTSOE_GR_DAM_Price }} €</td>
+          <td @click="toggleEditMode(row,$event,row.ENTSOE_GR_DAM_Price,row.ENTSOE_DE_DAM_Price,row.ENTSOE_FR_DAM_Price)" v-if="!editModes[row.DateTime]" >{{ row.ENTSOE_GR_DAM_Price }} €</td>
           <td class="input-td" v-else><input type="number" v-model="row.ENTSOE_GR_DAM_Price" @keyup.enter="toggleEditMode(row,$event,row.ENTSOE_GR_DAM_Price,row.ENTSOE_DE_DAM_Price,row.ENTSOE_FR_DAM_Price)" @keyup.escape="toggleEditMode(row,$event,row.ENTSOE_GR_DAM_Price,row.ENTSOE_DE_DAM_Price,row.ENTSOE_FR_DAM_Price)"  autofocus></td>
-          <td @click="toggleEditMode(row,$event,row.ENTSOE_GR_DAM_Price,row.ENTSOE_DE_DAM_Price,row.ENTSOE_FR_DAM_Price)" v-if="!editModes[row.id]" >{{ row.ENTSOE_DE_DAM_Price }} €</td>
+          <td @click="toggleEditMode(row,$event,row.ENTSOE_GR_DAM_Price,row.ENTSOE_DE_DAM_Price,row.ENTSOE_FR_DAM_Price)" v-if="!editModes[row.DateTime]" >{{ row.ENTSOE_DE_DAM_Price }} €</td>
           <td class="input-td" v-else><input type="number" v-model="row.ENTSOE_DE_DAM_Price" @keyup.enter="toggleEditMode(row,$event)" @keyup.escape="toggleEditMode(row,$event,row.ENTSOE_GR_DAM_Price,row.ENTSOE_DE_DAM_Price,row.ENTSOE_FR_DAM_Price)" autofocus></td>
-          <td @click="toggleEditMode(row,$event,row.ENTSOE_GR_DAM_Price,row.ENTSOE_DE_DAM_Price,row.ENTSOE_FR_DAM_Price)" v-if="!editModes[row.id]" >{{ row.ENTSOE_FR_DAM_Price }} €</td>
+          <td @click="toggleEditMode(row,$event,row.ENTSOE_GR_DAM_Price,row.ENTSOE_DE_DAM_Price,row.ENTSOE_FR_DAM_Price)" v-if="!editModes[row.DateTime]" >{{ row.ENTSOE_FR_DAM_Price }} €</td>
           <td class="input-td" v-else><input type="number" v-model="row.ENTSOE_FR_DAM_Price" @keyup.enter="toggleEditMode(row,$event)" @keyup.escape="toggleEditMode(row,$event,row.ENTSOE_GR_DAM_Price,row.ENTSOE_DE_DAM_Price,row.ENTSOE_FR_DAM_Price)" autofocus></td>
         </tr>
       </tbody>
@@ -45,7 +45,7 @@ export default {
       }
       else if (event.type === 'click' && !editing.value) {
         editing.value = true
-        editModes.value[row.id] = !editModes.value[row.id]
+        editModes.value[row.DateTime] = !editModes.value[row.DateTime]
         tempPrices.value['grPrice'] = grPrice
         tempPrices.value['dePrice'] = dePrice
         tempPrices.value['frPrice'] = frPrice
@@ -54,7 +54,7 @@ export default {
         row.ENTSOE_GR_DAM_Price = tempPrices.value['grPrice']
         row.ENTSOE_DE_DAM_Price = tempPrices.value['dePrice']
         row.ENTSOE_FR_DAM_Price = tempPrices.value['frPrice']
-        editModes.value[row.id] = !editModes.value[row.id]
+        editModes.value[row.DateTime] = !editModes.value[row.DateTime]
         editing.value = false
       }      
       else {
@@ -64,13 +64,17 @@ export default {
           alert('Please enter a valid number')
           return
         }
-        editModes.value[row.id] = !editModes.value[row.id]
+        editModes.value[row.DateTime] = !editModes.value[row.DateTime]
         editing.value = false
         row.ENTSOE_GR_DAM_Price = row.ENTSOE_GR_DAM_Price+''
         row.ENTSOE_GR_DAM_Price = row.ENTSOE_GR_DAM_Price+''
         row.ENTSOE_GR_DAM_Price = row.ENTSOE_GR_DAM_Price+''
+        /* I have comented out this section as it is not going to be working
+        on the version hosted in vercel. However I am keeping it as is for future
+        demonstration purposes.
+        
         const { update, errorMessage} = updateTimeseries(row)
-        update()
+        update()*/
       }
       
     };
