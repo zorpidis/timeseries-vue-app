@@ -27,7 +27,7 @@ export default {
 
 
     const filteredTimeseries = computed(() => {
-      if (!dateRange.value[0] || !dateRange.value[1]) {
+      if (!dateRange.value || !dateRange.value[0] || !dateRange.value[1]) {
         return timeseries.value
       }
       console.log(dateRange.value)
