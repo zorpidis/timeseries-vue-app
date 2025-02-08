@@ -5,7 +5,7 @@ const updateTimeseries = (row) => {
 
   const update = async () => {
     try{
-      let data = await fetch('https://67a79d14203008941f681c13.mockapi.io/api/timeseries/'+row.id, {
+      let data = await fetch('http://localhost:3000/timeseries/'+row.id, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json'
