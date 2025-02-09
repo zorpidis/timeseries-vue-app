@@ -159,6 +159,6 @@ export default defineComponent({
 <style>
 .chart-container {
   position: relative;
-  height: 400px;
+  height: 800px;
 }
 </style>

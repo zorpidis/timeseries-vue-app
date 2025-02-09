@@ -136,7 +136,7 @@ export default {
 }
 
 .timeseries-table input {
-  width: 10vw;
+  width: 80%;
   box-sizing: border-box;
   padding: 0;
   background: transparent;

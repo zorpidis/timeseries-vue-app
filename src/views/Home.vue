@@ -4,28 +4,28 @@
       <label for="date-picker">Select date range:</label>
       <VueDatePicker class="date-picker" id="date-picker" v-model="dateRange" :enable-time-picker="false" :range="{partialRange: false}"/>
     </div>
-    <TimeseriesTable :timeseries="filteredTimeseries"/>
-    <TimeseriesLineGraph :timeseries="filteredTimeseries"/>
+    <div class="content">
+      <TimeseriesTable class="table" :timeseries="filteredTimeseries"/>
+      <TimeseriesLineChart class="chart" :timeseries="filteredTimeseries"/>
+    </div>
   </div>
 </template>
 
 <script>
 import { ref, computed } from 'vue';
 import TimeseriesTable from '@/components/TimeseriesTable.vue';
-import TimeseriesLineGraph from '@/components/TimeseriesLineChart.vue';
+import TimeseriesLineChart from '@/components/TimeseriesLineChart.vue';
 import getTimeseries from '@/composables/getTimeseries';
 import VueDatePicker from '@vuepic/vue-datepicker';
 import '@vuepic/vue-datepicker/dist/main.css';
 
 export default {
   name: 'HomeView',
-  components: { TimeseriesTable, VueDatePicker, TimeseriesLineGraph },
+  components: { TimeseriesTable, VueDatePicker, TimeseriesLineChart },
   setup() {
     const { timeseries, load } = getTimeseries();
     load();
-    const dateRange = ref([]);
-
-
+    const dateRange = ref([])
     const filteredTimeseries = computed(() => {
       if (!dateRange.value || !dateRange.value[0] || !dateRange.value[1]) {
         return timeseries.value
@@ -67,6 +67,21 @@ export default {
   width: 300px;
 }
 
+.content {
+  display: flex;
+  width: 100%;
+}
+
+.table {
+  flex: 1;
+  max-width: 33%;
+}
+
+.chart {
+  flex: 2;
+  max-width: 67%;
+}
+
 @media screen and (max-width: 768px) {
   .date-selector {
     flex-direction: column;
@@ -75,6 +90,15 @@ export default {
 
   .date-selector .date-picker {
     width: 100%;
+  }
+
+  .content {
+    flex-direction: column;
+    height: 100vh;
+  }
+
+  .table, .chart {
+    max-width: 100%;
   }
 }
 
