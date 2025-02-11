@@ -1,5 +1,6 @@
 <template>
   <div class="table-container">
+    <Modal :type="modalType"  @update:isVisible="handleModalVisibility" :message="modalMessage" :visible="isModalVisible" v-if="isModalVisible"/>
     <table class="timeseries-table">
       <thead>
         <tr>
@@ -28,15 +29,22 @@
 </template>
 
 <script>
-import updateTimeseries from '@/composables/updateTimeseries';
+//import updateTimeseries from '@/composables/updateTimeseries';
+import Modal from './Modal.vue'
 import { ref } from 'vue';
 
 export default {
+  components: {
+    Modal
+  },
   props: ['timeseries'],
   setup() {
     const editModes = ref({})
     const editing = ref(false)
     const tempPrices = ref({})
+    const isModalVisible = ref(false)
+    const modalMessage = ref()
+    const modalType = ref()
     
 
     const toggleEditMode = (row,event,grPrice,dePrice,frPrice,clickedDate) => {
@@ -60,8 +68,14 @@ export default {
       else {
         const isNumber = (value) => !isNaN(parseFloat(value)) && isFinite(value);
 
-        if (!isNumber(row.ENTSOE_GR_DAM_Price) || !isNumber(row.ENTSOE_DE_DAM_Price) || !isNumber(row.ENTSOE_FR_DAM_Price)) {
-          alert('Please enter a valid number')
+        if (!isNumber(row.ENTSOE_GR_DAM_Price) ||
+            !isNumber(row.ENTSOE_DE_DAM_Price) ||
+            !isNumber(row.ENTSOE_FR_DAM_Price) ||
+            row.ENTSOE_GR_DAM_Price<=-2000 || row.ENTSOE_GR_DAM_Price>=2000 || 
+            row.ENTSOE_DE_DAM_Price<=-2000 || row.ENTSOE_DE_DAM_Price>=2000 || 
+            row.ENTSOE_FR_DAM_Price<=-2000 || row.ENTSOE_FR_DAM_Price>=2000
+          ) {
+          populateModal('Please enter a viable number between -2000 and 2000','warning')
           return
         }
         editModes.value[row.DateTime] = !editModes.value[row.DateTime]
@@ -75,6 +89,8 @@ export default {
         
         const { update, errorMessage} = updateTimeseries(row)
         update()*/
+        
+        populateModal('Successfully edited the row.','success')
       }
       
     };
@@ -89,7 +105,17 @@ export default {
       return `${day}-${month}-${year} ${hours}:${minutes}`;
     }
 
-    return { editModes, toggleEditMode, editing, formatDateTime}
+    const populateModal = (message,type) => {
+      modalMessage.value = message
+      modalType.value = type
+      isModalVisible.value = true
+    }
+
+    const handleModalVisibility = () => {
+      isModalVisible.value = false
+    }
+
+    return { editModes, toggleEditMode, editing, formatDateTime,isModalVisible,handleModalVisibility,modalMessage,modalType }
   }
 }
 </script>

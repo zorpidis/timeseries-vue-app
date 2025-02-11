@@ -1,5 +1,8 @@
 <template>
-  <div class="home">
+  <div v-if="!filteredTimeseries.length">
+    <Spinner />
+  </div>
+  <div v-else class="home">
     <div class="date-selector">
       <label for="date-picker">Select date range:</label>
       <VueDatePicker class="date-picker" dark="{{document.documentElement.getAttribute('data-theme')=='dark'}}" id="date-picker" v-model="dateRange" :enable-time-picker="false" :range="{partialRange: false}"/>
@@ -18,10 +21,11 @@ import TimeseriesLineChart from '@/components/TimeseriesLineChart.vue';
 import getTimeseries from '@/composables/getTimeseries';
 import VueDatePicker from '@vuepic/vue-datepicker';
 import '@vuepic/vue-datepicker/dist/main.css';
+import Spinner from '@/components/Spinner.vue';
 
 export default {
   name: 'HomeView',
-  components: { TimeseriesTable, VueDatePicker, TimeseriesLineChart },
+  components: { TimeseriesTable, VueDatePicker, TimeseriesLineChart, Spinner },
   setup() {
     const { timeseries, load } = getTimeseries()
     load()

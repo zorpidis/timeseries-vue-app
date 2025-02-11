@@ -8,6 +8,8 @@
   --color-letter: #77abb7;
   --color-edit: #3ee7df;
   
+  --color-modal-success-bg: #108353;
+  --color-modal-warning-bg: #611313;
 }
 
 :root {
@@ -19,6 +21,9 @@
   --color-menu-transparent: rgba(255, 255, 255, 0.144);
   --color-letter: #2c3e50;
   --color-edit: #3e8de7;
+
+  --color-modal-success-bg: #18c53e;
+  --color-modal-warning-bg: #ca2626;
 }
 
 
