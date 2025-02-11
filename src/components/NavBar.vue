@@ -26,7 +26,6 @@ export default {
   },
   setup() {
     const menuOpen = ref(false)
-    const isDarkMode = ref(false);
 
     const toggleMenu = () => {
       menuOpen.value = !menuOpen.value
