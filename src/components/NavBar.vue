@@ -1,10 +1,13 @@
 <template>
   <MobileNavigation v-if="menuOpen" @close="closeMenu"/>
   <header>
-    <h1 @click="toggleTheme()">InterVue</h1>
+    <h1>MZ</h1>
     <nav class="pc-nav">
       <router-link :to="{name: 'home'}">Home</router-link>
       <router-link :to="{name: 'about'}">About</router-link>
+      <ThemeSwitch />
+      
+      
     </nav>
     <button class="burger" @click="toggleMenu" v-if="!menuOpen">
       &#9776;
@@ -15,8 +18,12 @@
 <script>
 import { ref } from 'vue'
 import MobileNavigation from '@/components/MobileNavigation.vue'
+import ThemeSwitch from './ThemeSwitch.vue';
 export default {
-  components: {MobileNavigation},
+  components: {
+    MobileNavigation,
+    ThemeSwitch
+  },
   setup() {
     const menuOpen = ref(false)
     const isDarkMode = ref(false);
@@ -29,12 +36,9 @@ export default {
       menuOpen.value = false
     }
 
-    const toggleTheme = () => {
-      isDarkMode.value = !isDarkMode.value
-      document.documentElement.setAttribute('data-theme', isDarkMode.value ? 'dark' : 'light')
-    }
+    
 
-    return { menuOpen, toggleMenu, closeMenu, toggleTheme, isDarkMode }
+    return { menuOpen, toggleMenu, closeMenu }
   }
 }
 </script>
@@ -71,6 +75,11 @@ header a.router-link-active {
   font-weight: bold;
   margin-left: 20px;
 
+}
+
+nav {
+  display: flex;
+  align-items: center;
 }
 
 @media (min-width: 768px) {

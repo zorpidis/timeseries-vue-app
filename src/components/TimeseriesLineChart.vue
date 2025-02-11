@@ -1,11 +1,20 @@
 <template>
   <div class="chart-container" v-if="timeseries && timeseries.length">
+    <div class="color-pickers">
+      <label for="colorGR">GR:</label>
+      <input type="color" v-model="colorGR" />
+      <label for="colorDE">DE:</label>
+      <input type="color" v-model="colorDE" />
+      <label for="colorFR">FR:</label>
+      <input type="color" v-model="colorFR" />
+    </div>
+    
     <Line :data="chartData" :options="chartOptions" />
   </div>
 </template>
 
 <script>
-import { defineComponent, computed } from 'vue'
+import { defineComponent, computed, ref } from 'vue'
 import { Line } from 'vue-chartjs'
 import {
   Chart as ChartJS,
@@ -58,6 +67,10 @@ export default defineComponent({
     ]);
     const maxPrice = computed(() => Math.max(...allPrices.value));
 
+    const colorGR = ref('#0100a9')
+    const colorDE = ref('#c76c4e')
+    const colorFR = ref('#71b504')
+    
     console.log('Labels:', labels.value);
     console.log('Price1:', price1.value);
     console.log('Price2:', price2.value);
@@ -73,22 +86,22 @@ export default defineComponent({
         datasets: [
           {
             label: 'Greece',
-            backgroundColor: '#f87979',
-            borderColor: '#f87979',
+            backgroundColor: colorGR.value,
+            borderColor: colorGR.value,
             data: price1.value,
             fill: false
           },
           {
             label: 'Germany',
-            backgroundColor: '#7acbf9',
-            borderColor: '#7acbf9',
+            backgroundColor: colorDE.value,
+            borderColor: colorDE.value,
             data: price2.value,
             fill: false
           },
           {
             label: 'France',
-            backgroundColor: '#79f879',
-            borderColor: '#79f879',
+            backgroundColor: colorFR.value,
+            borderColor: colorFR.value,
             data: price3.value,
             fill: false
           }
@@ -101,9 +114,7 @@ export default defineComponent({
         return {};
       }
 
-      const isDarkTheme = document.documentElement.getAttribute('data-theme') === 'dark';
-      const textColor = isDarkTheme ? '#77abb7' : '#2c3e50';
-      const gridColor = isDarkTheme ? '#254B62' : '#ddd';
+    
 
       return {
         responsive: true,
@@ -122,8 +133,7 @@ export default defineComponent({
             max: maxLabel.value,
             title: {
               display: true,
-              text: 'Date',
-              color: textColor
+              text: 'Date'
             }
           },
           y: {
@@ -136,6 +146,12 @@ export default defineComponent({
           }
         },
         plugins: {
+          legend: {
+            display: false // Hide the legend
+          },
+          tooltip: {
+            enabled: false // Disable tooltips
+          },
           zoom: {
             pan: {
               enabled: true,
@@ -155,7 +171,7 @@ export default defineComponent({
       };
     });
 
-    return { chartData, chartOptions };
+    return { chartData, chartOptions, colorGR, colorDE, colorFR };
   }
 });
 </script>
@@ -163,6 +179,36 @@ export default defineComponent({
 <style>
 .chart-container {
   position: relative;
-  height: 800px;
+  height: 700px;
+}
+
+@media (max-width: 767px) {
+  .chart-container {
+    margin-top: 10%;
+  position: relative;
+  height: 300px;
+}
+}
+
+.color-pickers {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+
+input[type="color"] {
+	-webkit-appearance: none;
+	border: none;
+	width: 20px;
+	height: 20px;
+  margin-right: 4.2vw;
+}
+input[type="color"]::-webkit-color-swatch-wrapper {
+	padding: 0;
+}
+input[type="color"]::-webkit-color-swatch {
+	border: none;
 }
 </style>

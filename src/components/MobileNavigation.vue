@@ -5,19 +5,29 @@
       <nav>
         <router-link :to="{ name: 'home' }" @click="closeMenu">Home</router-link>
         <router-link :to="{ name: 'about' }" @click="closeMenu">About</router-link>
+        <ThemeSwitch class="mobile-theme-switch"/>
       </nav>
     </div>
   </div>
 </template>
 
-<script setup>
-import { defineEmits } from "vue";
+<script>
+import ThemeSwitch from "./ThemeSwitch.vue";
+export default {
+  components: {
+    ThemeSwitch
+  },
+  setup(_, { emit }) {
+  
 
-const emit = defineEmits(["close"]);
+  const closeMenu = () => {
+      emit("close");
+    };
 
-const closeMenu = () => {
-  emit("close");
-};
+  return { closeMenu }
+}
+}
+
 </script>
 
 <style scoped>

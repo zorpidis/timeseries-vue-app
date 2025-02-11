@@ -26,10 +26,6 @@ export default {
     const { timeseries, load } = getTimeseries()
     load()
     const isDarkMode = ref(document.documentElement.getAttribute('data-theme') === 'dark');
-
-    const updateTheme = () => {
-      isDarkMode.value = document.documentElement.getAttribute('data-theme') === 'dark';
-    };
     
     const dateRange = ref([])
     const filteredTimeseries = computed(() => {
