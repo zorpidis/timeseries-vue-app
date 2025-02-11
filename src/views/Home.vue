@@ -109,4 +109,10 @@ export default {
     width: 100%;
   }
 }
+
+@media screen and (max-height: 768px) {
+  .table, .chart {
+    height: 60vh;
+  }
+}
 </style>

@@ -147,15 +147,15 @@ export default defineComponent({
         },
         plugins: {
           legend: {
-            display: false // Hide the legend
+            display: false 
           },
           tooltip: {
-            enabled: false // Disable tooltips
+            enabled: false 
           },
           zoom: {
             pan: {
               enabled: true,
-              mode: 'x'
+              mode: 'xy'
             },
             zoom: {
               wheel: {
@@ -164,7 +164,7 @@ export default defineComponent({
               pinch: {
                 enabled: true
               },
-              mode: 'x'
+              mode: 'xy'
             }
           }
         }
