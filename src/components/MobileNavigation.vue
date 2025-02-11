@@ -31,7 +31,7 @@ const closeMenu = () => {
   justify-content: flex-end;
   align-items: flex-start; 
   z-index: 1500;
-  background-color: rgba(255, 255, 255, 0.144);
+  background-color: var(--color-menu-transparent);
   backdrop-filter: blur(10px);
 }
 
@@ -47,7 +47,7 @@ const closeMenu = () => {
   background: none;
   border: none;
   align-self: flex-end;
-  color: black;
+  color: var(--color-letter);
   margin-right: 9.2vw;
   margin-top: 1.8vh;
 }
@@ -62,7 +62,7 @@ nav {
 nav a {
   font-size: 40px;
   text-decoration: none;
-  color: black;
+  color: var(--color-letter);
   font-weight: bold;
   margin-right: 9.2vw;
 }

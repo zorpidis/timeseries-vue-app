@@ -1,7 +1,7 @@
 <template>
   <MobileNavigation v-if="menuOpen" @close="closeMenu"/>
   <header>
-    <h1>InterVue</h1>
+    <h1 @click="toggleTheme()">InterVue</h1>
     <nav class="pc-nav">
       <router-link :to="{name: 'home'}">Home</router-link>
       <router-link :to="{name: 'about'}">About</router-link>
@@ -13,12 +13,13 @@
 </template>
 
 <script>
-import { ref, onMounted, onUnmounted } from 'vue'
+import { ref } from 'vue'
 import MobileNavigation from '@/components/MobileNavigation.vue'
 export default {
   components: {MobileNavigation},
   setup() {
     const menuOpen = ref(false)
+    const isDarkMode = ref(false);
 
     const toggleMenu = () => {
       menuOpen.value = !menuOpen.value
@@ -28,7 +29,12 @@ export default {
       menuOpen.value = false
     }
 
-    return { menuOpen, toggleMenu, closeMenu }
+    const toggleTheme = () => {
+      isDarkMode.value = !isDarkMode.value
+      document.documentElement.setAttribute('data-theme', isDarkMode.value ? 'dark' : 'light')
+    }
+
+    return { menuOpen, toggleMenu, closeMenu, toggleTheme, isDarkMode }
   }
 }
 </script>
@@ -43,26 +49,28 @@ header {
   justify-content: space-between;
   align-items: center;
   padding: 10px;
-  background: white;
+  background: var(--color-bg);
   box-shadow: 0px 2px 15px rgba(0, 0, 0, 0.1);
   z-index: 1000;
   height: 60px;
 }
 header h1 {
-  color: #dfdfdf;
+  color: var(--color-text);
   font-size: 48px;
   font-family: monospace;
   margin-left: 10vw;
 }
 header a {
-  color: #bbb;
+  color: var(--color-nav-text);
   text-decoration: none;
   margin-left: 20px;
 }
 
 header a.router-link-active {
-  color: #444;
+  color: var(--color-letter);
   font-weight: bold;
+  margin-left: 20px;
+
 }
 
 @media (min-width: 768px) {
@@ -88,7 +96,7 @@ header a.router-link-active {
     border: none;
     cursor: pointer;
     margin-right: 11vw;
-    color: black;
+    color: var(--color-letter);
   }
 
   header h1 {

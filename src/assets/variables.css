@@ -1,0 +1,44 @@
+:root[data-theme="dark"] {
+  --color-bg: #1D3E53;
+  --color-border: #142b3a;
+  --color-cell-odd: #254B62;
+  --color-cell-even: #2c3e50;
+  --color-nav-text: #6797a1;
+  --color-menu-transparent: rgba(255, 255, 255, 0.144);
+  --color-letter: #77abb7;
+  --color-edit: #3ee7df;
+  
+}
+
+:root {
+  --color-bg: #fff;
+  --color-border: #ddd;
+  --color-cell-odd: #f2f2f2;
+  --color-cell-even: #f9f9f9;
+  --color-nav-text: #ddd;
+  --color-menu-transparent: rgba(255, 255, 255, 0.144);
+  --color-letter: #2c3e50;
+  --color-edit: #3e8de7;
+}
+
+
+::-webkit-scrollbar {
+  width: 12px;
+}
+
+
+
+.table-container {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-border) var(--color-bg); /* For Firefox */
+}
+
+.dp__theme_dark {
+  --dp-background-color: var(--color-bg);
+  --dp-text-color: var(--color-letter);
+  --dp-hover-color: var(--color-nav-text);
+  --dp-primary-color: var(--color-edit);
+  --dp-primary-text-color: var(--color-bg);
+  --dp-border-color: var(--color-border);
+
+}

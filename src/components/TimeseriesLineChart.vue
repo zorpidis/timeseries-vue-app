@@ -68,7 +68,6 @@ export default defineComponent({
         console.log('No timeseries data available');
         return { labels: [], datasets: [] };
       }
-
       return {
         labels: labels.value,
         datasets: [
@@ -102,6 +101,10 @@ export default defineComponent({
         return {};
       }
 
+      const isDarkTheme = document.documentElement.getAttribute('data-theme') === 'dark';
+      const textColor = isDarkTheme ? '#77abb7' : '#2c3e50';
+      const gridColor = isDarkTheme ? '#254B62' : '#ddd';
+
       return {
         responsive: true,
         maintainAspectRatio: false,
@@ -119,7 +122,8 @@ export default defineComponent({
             max: maxLabel.value,
             title: {
               display: true,
-              text: 'Date'
+              text: 'Date',
+              color: textColor
             }
           },
           y: {

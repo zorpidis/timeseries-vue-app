@@ -2,11 +2,11 @@
   <div class="home">
     <div class="date-selector">
       <label for="date-picker">Select date range:</label>
-      <VueDatePicker class="date-picker" id="date-picker" v-model="dateRange" :enable-time-picker="false" :range="{partialRange: false}"/>
+      <VueDatePicker class="date-picker" dark="{{document.documentElement.getAttribute('data-theme')=='dark'}}" id="date-picker" v-model="dateRange" :enable-time-picker="false" :range="{partialRange: false}"/>
     </div>
     <div class="content">
       <TimeseriesTable class="table" :timeseries="filteredTimeseries"/>
-      <TimeseriesLineChart class="chart" :timeseries="filteredTimeseries"/>
+      <TimeseriesLineChart class="chart" :timeseries="filteredTimeseries" theme="{{document.getAttribute('data-theme')}}"/>
     </div>
   </div>
 </template>
@@ -23,8 +23,14 @@ export default {
   name: 'HomeView',
   components: { TimeseriesTable, VueDatePicker, TimeseriesLineChart },
   setup() {
-    const { timeseries, load } = getTimeseries();
-    load();
+    const { timeseries, load } = getTimeseries()
+    load()
+    const isDarkMode = ref(document.documentElement.getAttribute('data-theme') === 'dark');
+
+    const updateTheme = () => {
+      isDarkMode.value = document.documentElement.getAttribute('data-theme') === 'dark';
+    };
+    
     const dateRange = ref([])
     const filteredTimeseries = computed(() => {
       if (!dateRange.value || !dateRange.value[0] || !dateRange.value[1]) {
@@ -42,7 +48,7 @@ export default {
       });
     });
 
-    return { timeseries, filteredTimeseries, dateRange };
+    return { timeseries, filteredTimeseries, dateRange, isDarkMode };
   }
 }
 </script>

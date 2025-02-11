@@ -13,14 +13,14 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="row in timeseries" :key="row.DateTime">
+        <tr v-for="row in timeseries" :key="row.DateTime" @click="toggleEditMode(row,$event,row.ENTSOE_GR_DAM_Price,row.ENTSOE_DE_DAM_Price,row.ENTSOE_FR_DAM_Price)" @keyup.enter="toggleEditMode(row,$event)" @keyup.escape="toggleEditMode(row,$event,row.ENTSOE_GR_DAM_Price,row.ENTSOE_DE_DAM_Price,row.ENTSOE_FR_DAM_Price)">
           <td>{{ formatDateTime(row.DateTime) }}</td>
-          <td @click="toggleEditMode(row,$event,row.ENTSOE_GR_DAM_Price,row.ENTSOE_DE_DAM_Price,row.ENTSOE_FR_DAM_Price)" v-if="!editModes[row.DateTime]" >{{ row.ENTSOE_GR_DAM_Price }} €</td>
-          <td class="input-td" v-else><input type="number" v-model="row.ENTSOE_GR_DAM_Price" @keyup.enter="toggleEditMode(row,$event,row.ENTSOE_GR_DAM_Price,row.ENTSOE_DE_DAM_Price,row.ENTSOE_FR_DAM_Price)" @keyup.escape="toggleEditMode(row,$event,row.ENTSOE_GR_DAM_Price,row.ENTSOE_DE_DAM_Price,row.ENTSOE_FR_DAM_Price)"  autofocus></td>
-          <td @click="toggleEditMode(row,$event,row.ENTSOE_GR_DAM_Price,row.ENTSOE_DE_DAM_Price,row.ENTSOE_FR_DAM_Price)" v-if="!editModes[row.DateTime]" >{{ row.ENTSOE_DE_DAM_Price }} €</td>
-          <td class="input-td" v-else><input type="number" v-model="row.ENTSOE_DE_DAM_Price" @keyup.enter="toggleEditMode(row,$event)" @keyup.escape="toggleEditMode(row,$event,row.ENTSOE_GR_DAM_Price,row.ENTSOE_DE_DAM_Price,row.ENTSOE_FR_DAM_Price)" autofocus></td>
-          <td @click="toggleEditMode(row,$event,row.ENTSOE_GR_DAM_Price,row.ENTSOE_DE_DAM_Price,row.ENTSOE_FR_DAM_Price)" v-if="!editModes[row.DateTime]" >{{ row.ENTSOE_FR_DAM_Price }} €</td>
-          <td class="input-td" v-else><input type="number" v-model="row.ENTSOE_FR_DAM_Price" @keyup.enter="toggleEditMode(row,$event)" @keyup.escape="toggleEditMode(row,$event,row.ENTSOE_GR_DAM_Price,row.ENTSOE_DE_DAM_Price,row.ENTSOE_FR_DAM_Price)" autofocus></td>
+          <td v-if="!editModes[row.DateTime]" >{{ row.ENTSOE_GR_DAM_Price }} €</td>
+          <td class="input-td" v-else><input type="number" v-model="row.ENTSOE_GR_DAM_Price" ></td>
+          <td v-if="!editModes[row.DateTime]" >{{ row.ENTSOE_DE_DAM_Price }} €</td>
+          <td class="input-td" v-else><input type="number" v-model="row.ENTSOE_DE_DAM_Price" ></td>
+          <td v-if="!editModes[row.DateTime]" >{{ row.ENTSOE_FR_DAM_Price }} €</td>
+          <td class="input-td" v-else><input type="number" v-model="row.ENTSOE_FR_DAM_Price" ></td>
         </tr>
       </tbody>
     </table>
@@ -39,7 +39,7 @@ export default {
     const tempPrices = ref({})
     
 
-    const toggleEditMode = (row,event,grPrice,dePrice,frPrice) => {
+    const toggleEditMode = (row,event,grPrice,dePrice,frPrice,clickedDate) => {
       if(event.type === 'click' && editing.value) {
         return
       }
@@ -50,7 +50,7 @@ export default {
         tempPrices.value['dePrice'] = dePrice
         tempPrices.value['frPrice'] = frPrice
       }
-      else if(event.type === 'keyup' && event.key == 'Escape') {
+      else if((event.type === 'keyup' && event.key == 'Escape')) {
         row.ENTSOE_GR_DAM_Price = tempPrices.value['grPrice']
         row.ENTSOE_DE_DAM_Price = tempPrices.value['dePrice']
         row.ENTSOE_FR_DAM_Price = tempPrices.value['frPrice']
@@ -98,7 +98,7 @@ export default {
 .table-container {
   height: 700px;
   overflow-y: auto;
-  border-bottom: 1px solid #ddd;
+  border-bottom: 1px solid var(--color-border);
 }
 
 .timeseries-table {
@@ -108,12 +108,12 @@ export default {
 }
 
 .timeseries-table th, .timeseries-table td {
-  border: 1px solid #ddd;
+  border: 1px solid var(--color-border);
   padding: 8px;
 }
 
 .timeseries-table th {
-  background-color: #f2f2f2;
+  background-color: var(--color-cell-odd);
   text-align: center;
 }
 
@@ -122,11 +122,11 @@ export default {
 }
 
 .timeseries-table tr:nth-child(even) {
-  background-color: #f9f9f9;
+  background-color: var(--color-cell-even);
 }
 
 .timeseries-table tr:hover {
-  background-color: #ddd;
+  background-color: var(--color-cell-odd);
 }
 
 .timeseries-table thead {
@@ -146,7 +146,7 @@ export default {
 }
 
 .timeseries-table .input-td {
-  background: #3e8de7;
+  background: var(--color-edit);
 }
 
 input[type=number]::-webkit-outer-spin-button,
