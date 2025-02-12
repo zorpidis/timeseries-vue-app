@@ -1,8 +1,9 @@
 <template>
-  <div v-if="!filteredTimeseries.length">
+  <div v-if="!timeseries.length">
     <Spinner />
   </div>
   <div v-else class="home">
+    <Modal type="warning"  @update:isVisible="handleModalVisibility" message="There is no data between the dates you entered." :visible="isModalVisible" v-if="isModalVisible"/>
     <div class="date-selector">
       <label for="date-picker">Select date range:</label>
       <VueDatePicker class="date-picker" dark="{{document.documentElement.getAttribute('data-theme')=='dark'}}" id="date-picker" v-model="dateRange" :enable-time-picker="false" :range="{partialRange: false}"/>
@@ -15,40 +16,60 @@
 </template>
 
 <script>
-import { ref, computed } from 'vue';
-import TimeseriesTable from '@/components/TimeseriesTable.vue';
-import TimeseriesLineChart from '@/components/TimeseriesLineChart.vue';
-import getTimeseries from '@/composables/getTimeseries';
-import VueDatePicker from '@vuepic/vue-datepicker';
-import '@vuepic/vue-datepicker/dist/main.css';
-import Spinner from '@/components/Spinner.vue';
+import { ref, computed } from 'vue'
+import TimeseriesTable from '@/components/TimeseriesTable.vue'
+import TimeseriesLineChart from '@/components/TimeseriesLineChart.vue'
+import getTimeseries from '@/composables/getTimeseries'
+import VueDatePicker from '@vuepic/vue-datepicker'
+import '@vuepic/vue-datepicker/dist/main.css'
+import Spinner from '@/components/Spinner.vue'
+import Modal from '@/components/Modal.vue'
 
 export default {
   name: 'HomeView',
-  components: { TimeseriesTable, VueDatePicker, TimeseriesLineChart, Spinner },
+  components: {
+      TimeseriesTable,
+      VueDatePicker,
+      TimeseriesLineChart,
+      Spinner,
+      Modal
+     },
   setup() {
     const { timeseries, load } = getTimeseries()
     load()
-    const isDarkMode = ref(document.documentElement.getAttribute('data-theme') === 'dark');
+    const isDarkMode = ref(document.documentElement.getAttribute('data-theme') === 'dark')
+    const isModalVisible = ref()
     
     const dateRange = ref([])
     const filteredTimeseries = computed(() => {
       if (!dateRange.value || !dateRange.value[0] || !dateRange.value[1]) {
         return timeseries.value
       }
-      console.log(dateRange.value)
       const start = new Date(dateRange.value[0])
       const end = new Date(dateRange.value[1])
       start.setHours(0, 0, 0, 0)
       end.setHours(23, 59, 59, 999)
 
-      return timeseries.value.filter(item => {
+      let returnedTimeseries = timeseries.value.filter(item => {
         const itemDate = new Date(item.DateTime)
         return itemDate >= start && itemDate <= end
-      });
-    });
+      })
 
-    return { timeseries, filteredTimeseries, dateRange, isDarkMode };
+      console.log(returnedTimeseries)
+      if(!returnedTimeseries.length) {
+        isModalVisible.value = true
+        return timeseries.value
+      }
+
+      return returnedTimeseries
+    })
+    
+    const handleModalVisibility = () => {
+      dateRange.value = []
+      isModalVisible.value = false
+    }
+
+    return { timeseries, filteredTimeseries, dateRange, isDarkMode, isModalVisible, handleModalVisibility }
   }
 }
 </script>

@@ -7,7 +7,6 @@
 <script>
 
 import NavBar from './components/NavBar.vue'
-import { ref } from 'vue'
 
 export default {
   components: { NavBar },

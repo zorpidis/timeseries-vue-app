@@ -21,8 +21,8 @@ export default {
   
 
   const closeMenu = () => {
-      emit("close");
-    };
+      emit("close")
+    }
 
   return { closeMenu }
 }

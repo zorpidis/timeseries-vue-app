@@ -26,7 +26,7 @@ export default {
   }
   },
   setup(props, { emit }) {
-    const modalType = ref(props.type);
+    const modalType = ref(props.type)
 
     const modalTitle = computed(() => {
       return props.type === 'success' ? 'Success' : 'Error';

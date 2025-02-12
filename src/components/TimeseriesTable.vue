@@ -17,11 +17,11 @@
         <tr v-for="row in timeseries" :key="row.DateTime" @click="toggleEditMode(row,$event,row.ENTSOE_GR_DAM_Price,row.ENTSOE_DE_DAM_Price,row.ENTSOE_FR_DAM_Price)" @keyup.enter="toggleEditMode(row,$event)" @keyup.escape="toggleEditMode(row,$event,row.ENTSOE_GR_DAM_Price,row.ENTSOE_DE_DAM_Price,row.ENTSOE_FR_DAM_Price)">
           <td>{{ formatDateTime(row.DateTime) }}</td>
           <td v-if="!editModes[row.DateTime]" >{{ row.ENTSOE_GR_DAM_Price }} €</td>
-          <td class="input-td" v-else><input type="number" v-model="row.ENTSOE_GR_DAM_Price" ></td>
+          <td v-else class="input-td"><input type="number" v-model="row.ENTSOE_GR_DAM_Price"></td>
           <td v-if="!editModes[row.DateTime]" >{{ row.ENTSOE_DE_DAM_Price }} €</td>
-          <td class="input-td" v-else><input type="number" v-model="row.ENTSOE_DE_DAM_Price" ></td>
+          <td v-else class="input-td"><input type="number" v-model="row.ENTSOE_DE_DAM_Price"></td>
           <td v-if="!editModes[row.DateTime]" >{{ row.ENTSOE_FR_DAM_Price }} €</td>
-          <td class="input-td" v-else><input type="number" v-model="row.ENTSOE_FR_DAM_Price" ></td>
+          <td v-else class="input-td"><input type="number" v-model="row.ENTSOE_FR_DAM_Price"></td>
         </tr>
       </tbody>
     </table>
@@ -29,9 +29,9 @@
 </template>
 
 <script>
-//import updateTimeseries from '@/composables/updateTimeseries';
+//import updateTimeseries from '@/composables/updateTimeseries'
 import Modal from './Modal.vue'
-import { ref } from 'vue';
+import { ref } from 'vue'
 
 export default {
   components: {
@@ -47,7 +47,7 @@ export default {
     const modalType = ref()
     
 
-    const toggleEditMode = (row,event,grPrice,dePrice,frPrice,clickedDate) => {
+    const toggleEditMode = (row,event,grPrice,dePrice,frPrice) => {
       if(event.type === 'click' && editing.value) {
         return
       }
@@ -66,7 +66,7 @@ export default {
         editing.value = false
       }      
       else {
-        const isNumber = (value) => !isNaN(parseFloat(value)) && isFinite(value);
+        const isNumber = (value) => !isNaN(parseFloat(value)) && isFinite(value)
 
         if (!isNumber(row.ENTSOE_GR_DAM_Price) ||
             !isNumber(row.ENTSOE_DE_DAM_Price) ||
@@ -93,16 +93,16 @@ export default {
         populateModal('Successfully edited the row.','success')
       }
       
-    };
+    }
 
     const formatDateTime = (dateTime) => {
-      let date = new Date(dateTime);
-      let day = String(date.getDate()).padStart(2, '0');
-      let month = String(date.getMonth() + 1).padStart(2, '0');
-      let year = date.getFullYear();
-      let hours = String(date.getHours()).padStart(2, '0');
-      let minutes = String(date.getMinutes()).padStart(2, '0');
-      return `${day}-${month}-${year} ${hours}:${minutes}`;
+      let date = new Date(dateTime)
+      let day = String(date.getDate()).padStart(2, '0')
+      let month = String(date.getMonth() + 1).padStart(2, '0')
+      let year = date.getFullYear()
+      let hours = String(date.getHours()).padStart(2, '0')
+      let minutes = String(date.getMinutes()).padStart(2, '0')
+      return `${day}-${month}-${year} ${hours}:${minutes}`
     }
 
     const populateModal = (message,type) => {

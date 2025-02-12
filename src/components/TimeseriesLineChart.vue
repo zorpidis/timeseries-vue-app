@@ -40,7 +40,7 @@ ChartJS.register(
   Legend,
   TimeScale,
   zoomPlugin
-);
+)
 
 export default defineComponent({
   name: 'TimeseriesLineChart',
@@ -54,32 +54,27 @@ export default defineComponent({
     }
   },
   setup(props) {
-    const labels = computed(() => props.timeseries.map(item => item.DateTime));
-    const price1 = computed(() => props.timeseries.map(item => parseFloat(item.ENTSOE_GR_DAM_Price)));
-    const price2 = computed(() => props.timeseries.map(item => parseFloat(item.ENTSOE_DE_DAM_Price)));
-    const price3 = computed(() => props.timeseries.map(item => parseFloat(item.ENTSOE_FR_DAM_Price)));
-    const maxLabel = computed(() => labels.value[labels.value.length - 1]);
-    const minLabel = computed(() => labels.value[0]);
+    const labels = computed(() => props.timeseries.map(item => item.DateTime))
+    const price1 = computed(() => props.timeseries.map(item => parseFloat(item.ENTSOE_GR_DAM_Price)))
+    const price2 = computed(() => props.timeseries.map(item => parseFloat(item.ENTSOE_DE_DAM_Price)))
+    const price3 = computed(() => props.timeseries.map(item => parseFloat(item.ENTSOE_FR_DAM_Price)))
+    const maxLabel = computed(() => labels.value[labels.value.length - 1])
+    const minLabel = computed(() => labels.value[0])
     const allPrices = computed(() => [
       ...props.timeseries.map(item => parseFloat(item.ENTSOE_GR_DAM_Price)),
       ...props.timeseries.map(item => parseFloat(item.ENTSOE_DE_DAM_Price)),
       ...props.timeseries.map(item => parseFloat(item.ENTSOE_FR_DAM_Price))
-    ]);
-    const maxPrice = computed(() => Math.max(...allPrices.value));
+    ])
+    const maxPrice = computed(() => Math.max(...allPrices.value))
 
     const colorGR = ref('#0100a9')
     const colorDE = ref('#c76c4e')
     const colorFR = ref('#71b504')
     
-    console.log('Labels:', labels.value);
-    console.log('Price1:', price1.value);
-    console.log('Price2:', price2.value);
-    console.log('Price3:', price3.value);
 
     const chartData = computed(() => {
       if (!props.timeseries || props.timeseries.length === 0) {
-        console.log('No timeseries data available');
-        return { labels: [], datasets: [] };
+        return { labels: [], datasets: [] }
       }
       return {
         labels: labels.value,
@@ -106,12 +101,12 @@ export default defineComponent({
             fill: false
           }
         ]
-      };
-    });
+      }
+    })
 
     const chartOptions = computed(() => {
       if (!props.timeseries || props.timeseries.length === 0) {
-        return {};
+        return {}
       }
 
     
@@ -168,12 +163,12 @@ export default defineComponent({
             }
           }
         }
-      };
-    });
+      }
+    })
 
-    return { chartData, chartOptions, colorGR, colorDE, colorFR };
+    return { chartData, chartOptions, colorGR, colorDE, colorFR }
   }
-});
+})
 </script>
 
 <style>

@@ -47,3 +47,12 @@
   --dp-border-color: var(--color-border);
 
 }
+
+.external-link {
+  color: var(--color-letter);
+  text-decoration: underline;
+}
+
+.external-link:hover {
+  color: var(--color-edit);
+}
