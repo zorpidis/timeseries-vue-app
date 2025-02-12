@@ -14,13 +14,13 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="row in timeseries" :key="row.DateTime" @click="toggleEditMode(row,$event,row.ENTSOE_GR_DAM_Price,row.ENTSOE_DE_DAM_Price,row.ENTSOE_FR_DAM_Price)" @keyup.enter="toggleEditMode(row,$event)" @keyup.escape="toggleEditMode(row,$event,row.ENTSOE_GR_DAM_Price,row.ENTSOE_DE_DAM_Price,row.ENTSOE_FR_DAM_Price)">
+        <tr v-for="row in timeseries" :key="row.id" @click="toggleEditMode(row,$event,row.ENTSOE_GR_DAM_Price,row.ENTSOE_DE_DAM_Price,row.ENTSOE_FR_DAM_Price)" @keyup.enter="toggleEditMode(row,$event)" @keyup.escape="toggleEditMode(row,$event,row.ENTSOE_GR_DAM_Price,row.ENTSOE_DE_DAM_Price,row.ENTSOE_FR_DAM_Price)">
           <td>{{ formatDateTime(row.DateTime) }}</td>
-          <td v-if="!editModes[row.DateTime]" >{{ row.ENTSOE_GR_DAM_Price }} €</td>
+          <td v-if="!editModes[row.id]" >{{ row.ENTSOE_GR_DAM_Price }} €</td>
           <td v-else class="input-td"><input type="number" v-model="row.ENTSOE_GR_DAM_Price"></td>
-          <td v-if="!editModes[row.DateTime]" >{{ row.ENTSOE_DE_DAM_Price }} €</td>
+          <td v-if="!editModes[row.id]" >{{ row.ENTSOE_DE_DAM_Price }} €</td>
           <td v-else class="input-td"><input type="number" v-model="row.ENTSOE_DE_DAM_Price"></td>
-          <td v-if="!editModes[row.DateTime]" >{{ row.ENTSOE_FR_DAM_Price }} €</td>
+          <td v-if="!editModes[row.id]" >{{ row.ENTSOE_FR_DAM_Price }} €</td>
           <td v-else class="input-td"><input type="number" v-model="row.ENTSOE_FR_DAM_Price"></td>
         </tr>
       </tbody>
@@ -29,7 +29,7 @@
 </template>
 
 <script>
-//import updateTimeseries from '@/composables/updateTimeseries'
+import updateTimeseries from '@/composables/updateTimeseries'
 import Modal from './Modal.vue'
 import { ref } from 'vue'
 
@@ -47,13 +47,13 @@ export default {
     const modalType = ref()
     
 
-    const toggleEditMode = (row,event,grPrice,dePrice,frPrice) => {
+    const toggleEditMode = async (row,event,grPrice,dePrice,frPrice) => {
       if(event.type === 'click' && editing.value) {
         return
       }
       else if (event.type === 'click' && !editing.value) {
         editing.value = true
-        editModes.value[row.DateTime] = !editModes.value[row.DateTime]
+        editModes.value[row.id] = !editModes.value[row.id]
         tempPrices.value['grPrice'] = grPrice
         tempPrices.value['dePrice'] = dePrice
         tempPrices.value['frPrice'] = frPrice
@@ -62,7 +62,7 @@ export default {
         row.ENTSOE_GR_DAM_Price = tempPrices.value['grPrice']
         row.ENTSOE_DE_DAM_Price = tempPrices.value['dePrice']
         row.ENTSOE_FR_DAM_Price = tempPrices.value['frPrice']
-        editModes.value[row.DateTime] = !editModes.value[row.DateTime]
+        editModes.value[row.id] = !editModes.value[row.id]
         editing.value = false
       }      
       else {
@@ -78,19 +78,19 @@ export default {
           populateModal('Please enter a viable number between -2000 and 2000','warning')
           return
         }
-        editModes.value[row.DateTime] = !editModes.value[row.DateTime]
+        editModes.value[row.id] = !editModes.value[row.id]
         editing.value = false
         row.ENTSOE_GR_DAM_Price = row.ENTSOE_GR_DAM_Price+''
         row.ENTSOE_GR_DAM_Price = row.ENTSOE_GR_DAM_Price+''
         row.ENTSOE_GR_DAM_Price = row.ENTSOE_GR_DAM_Price+''
-        /* I have comented out this section as it is not going to be working
-        on the version hosted in vercel. However I am keeping it as is for future
-        demonstration purposes.
         
         const { update, errorMessage} = updateTimeseries(row)
-        update()*/
-        
-        populateModal('Successfully edited the row.','success')
+        await update()
+        if(errorMessage.value){
+          populateModal('Error editing data. '+errorMessage.value,'warning')
+        }else{
+          populateModal('Successfully edited the row.','success')
+        }
       }
       
     }
